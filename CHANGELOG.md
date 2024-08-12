@@ -1,3 +1,34 @@
+# 5.0.5
+
+## What's Changed
+
+- fix: parameters aren't encoded by @kevinhermawan in https://github.com/kevinhermawan/OllamaKit/pull/36
+
+# 5.0.4
+
+## What's Changed
+
+- refactor: updates chat and generation options by @kevinhermawan in https://github.com/kevinhermawan/OllamaKit/pull/34
+
+# 5.0.3
+
+## What's Changed
+
+- refactor: marks `images` as optional by @kevinhermawan in https://github.com/kevinhermawan/OllamaKit/pull/32
+- feat: adds `doneReason` to chat and generation responses by @kevinhermawan in https://github.com/kevinhermawan/OllamaKit/pull/33
+
+# 5.0.2
+
+## What's Changed
+
+- feat: adds tool calling support by @kevinhermawan in https://github.com/kevinhermawan/OllamaKit/pull/31
+
+# 5.0.1
+
+## What's Changed
+
+- chore: changes minimum macOS version to 12 by @kevinhermawan in https://github.com/kevinhermawan/OllamaKit/pull/30
+
 # 5.0.0
 
 ## What's Changed
