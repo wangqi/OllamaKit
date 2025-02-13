@@ -8,12 +8,12 @@
 import Foundation
 
 /// A structure that represents the available models from the Ollama API.
-public struct OKModelResponse: Decodable {
+public struct OKModelResponse: Decodable, Sendable {
     /// An array of ``Model`` instances, each representing a specific model available in the Ollama API.
     public let models: [Model]
     
     /// A structure that details individual models.
-    public struct Model: Decodable {
+    public struct Model: Decodable, Sendable {
         /// A string representing the name of the model.
         public let name: String
         
@@ -25,5 +25,26 @@ public struct OKModelResponse: Decodable {
         
         /// A `Date` representing the last modification date of the model.
         public let modifiedAt: Date
+
+        /// The details about the model.
+        public let details: ModelDetails
+
+        /// A structure that represents the details of the model.
+        public struct ModelDetails: Decodable, Sendable {
+            /// The format of the model. E.g. "gguf".
+            public let format: String
+
+            /// The family of the model. E.g. "llama".
+            public let family: String
+
+            /// The parameter size of the model. E.g. "8.0B".
+            public let parameterSize: String
+
+            /// The quantization level of the model. E.g. "Q4_0".
+            public let quantizationLevel: String
+
+            /// All the families of the model. E.g. ["llama", "phi3"].
+            public let families: [String]?
+        }
     }
 }

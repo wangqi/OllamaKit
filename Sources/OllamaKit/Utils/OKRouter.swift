@@ -8,8 +8,6 @@
 import Foundation
 
 internal enum OKRouter {
-    static var baseURL = URL(string: "http://localhost:11434")!
-    
     case root
     case models
     case modelInfo(data: OKModelInfoRequestData)
@@ -17,6 +15,7 @@ internal enum OKRouter {
     case chat(data: OKChatRequestData)
     case copyModel(data: OKCopyModelRequestData)
     case deleteModel(data: OKDeleteModelRequestData)
+    case pullModel(data: OKPullModelRequestData)
     case embeddings(data: OKEmbeddingsRequestData)
     
     internal var path: String {
@@ -35,6 +34,8 @@ internal enum OKRouter {
             return "/api/copy"
         case .deleteModel:
             return "/api/delete"
+        case .pullModel:
+            return "/api/pull"
         case .embeddings:
             return "/api/embeddings"
         }
@@ -56,6 +57,8 @@ internal enum OKRouter {
             return "POST"
         case .deleteModel:
             return "DELETE"
+        case .pullModel:
+            return "POST"
         case .embeddings:
             return "POST"
         }
@@ -67,8 +70,8 @@ internal enum OKRouter {
 }
 
 extension OKRouter {
-    func asURLRequest() throws -> URLRequest {
-        let url = OKRouter.baseURL.appendingPathComponent(path)
+    func asURLRequest(with baseURL: URL) throws -> URLRequest {
+        let url = baseURL.appendingPathComponent(path)
         
         var request = URLRequest(url: url)
         request.httpMethod = method
@@ -84,6 +87,8 @@ extension OKRouter {
         case .copyModel(let data):
             request.httpBody = try JSONEncoder.default.encode(data)
         case .deleteModel(let data):
+            request.httpBody = try JSONEncoder.default.encode(data)
+        case .pullModel(let data):
             request.httpBody = try JSONEncoder.default.encode(data)
         case .embeddings(let data):
             request.httpBody = try JSONEncoder.default.encode(data)

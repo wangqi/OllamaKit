@@ -8,7 +8,7 @@
 import Foundation
 
 /// A structure that encapsulates data for chat requests to the Ollama API.
-public struct OKChatRequestData {
+public struct OKChatRequestData: Sendable {
     private let stream: Bool
     
     /// A string representing the model identifier to be used for the chat session.
@@ -19,19 +19,24 @@ public struct OKChatRequestData {
     
     /// An optional array of ``OKJSONValue`` representing the tools available for tool calling in the chat.
     public let tools: [OKJSONValue]?
-    
+
+    /// Optional ``OKJSONValue`` representing the JSON schema for the response.
+    /// Be sure to also include "return as JSON" in your prompt
+    public let format: OKJSONValue?
+
     /// Optional ``OKCompletionOptions`` providing additional configuration for the chat request.
     public var options: OKCompletionOptions?
     
-    public init(model: String, messages: [Message], tools: [OKJSONValue]? = nil) {
+    public init(model: String, messages: [Message], tools: [OKJSONValue]? = nil, format: OKJSONValue? = nil) {
         self.stream = tools == nil
         self.model = model
         self.messages = messages
         self.tools = tools
+        self.format = format
     }
     
     /// A structure that represents a single message in the chat request.
-    public struct Message: Encodable {
+    public struct Message: Encodable, Sendable {
         /// A ``Role`` value indicating the sender of the message (system, assistant, user).
         public let role: Role
         
@@ -48,7 +53,7 @@ public struct OKChatRequestData {
         }
         
         /// An enumeration that represents the role of the message sender.
-        public enum Role: String, Encodable {
+        public enum Role: String, Encodable, Sendable {
             /// Indicates the message is from the system.
             case system
             
@@ -68,13 +73,14 @@ extension OKChatRequestData: Encodable {
         try container.encode(model, forKey: .model)
         try container.encode(messages, forKey: .messages)
         try container.encodeIfPresent(tools, forKey: .tools)
-        
+        try container.encodeIfPresent(format, forKey: .format)
+
         if let options {
             try options.encode(to: encoder)
         }
     }
     
     private enum CodingKeys: String, CodingKey {
-        case stream, model, messages, tools
+        case stream, model, messages, tools, format
     }
 }

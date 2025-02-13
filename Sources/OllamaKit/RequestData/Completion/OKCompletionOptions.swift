@@ -8,7 +8,7 @@
 import Foundation
 
 // A structure that encapsulates options for controlling the behavior of content generation in the Ollama API.
-public struct OKCompletionOptions: Encodable {
+public struct OKCompletionOptions: Encodable, Sendable {
     
     public init() {}
     
